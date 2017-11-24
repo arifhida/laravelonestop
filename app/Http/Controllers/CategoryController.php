@@ -37,9 +37,10 @@ class CategoryController extends Controller
 
     public function store(Request $request){        
         $this->validate($request,[
-            'name' => 'required'
+            'name' => 'required',
+            'icon' => 'required'
         ]);
-        Category::create(['name'=>$request->name,'active'=>$request->active]);
+        Category::create(['name'=>$request->name,'icon'=>$request->icon,'active'=>$request->active]);
         return response()->json(['status'=> 'OK']);
     }
 

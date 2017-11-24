@@ -18,9 +18,12 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/Home/{category}', 'HomeController@product')->name('home.category');
 Route::get('/category','CategoryController@index')->name('category');
-// Route::post('/category','CategoryController@store')->name('category.store');
+Route::get('/subcategory','SubCategoryController@index')->name('subcategory');
+Route::get('/subcategory/parent/{parent}','SubCategoryController@dataByParentId')->name('subcategory.parent');
 Route::get('/category/data','CategoryController@data')->name('category.get');
+Route::get('/subcategory/data','SubCategoryController@data')->name('subcategory.get');
 Route::get('/product/data','ProductController@data')->name('product.get');
 Route::resource('product', 'ProductController');
 

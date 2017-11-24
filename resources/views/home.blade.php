@@ -1,15 +1,13 @@
 @extends('layouts.app')
 
 @section('menu')
-<div class="card">
-    <div class="card-header">
-        Menu
-    </div>
-    <ul class="list-group list-group-flush">
+<div class="card">   
+    <div class="list-group">
         @foreach($categories as $category)
-        <li class="list-group-item">{{ $category->name }}</li>
+        <a class="list-group-item list-group-item-action" href="{{ route('home.category', ['category' => $category->id])}}">
+        <i class="fa {{ $category->icon}}"></i>&nbsp;{{ $category->name }}</a>
         @endforeach
-    </ul>
+    </div>
 </div>
 
 @endsection
@@ -21,7 +19,7 @@
             @foreach($data as $category)
             <div class="row">               
                <div class="col-md-12">  
-                    <h2>{{$category->name}}</h2>     
+                    <h2><i class="fa {{ $category->icon}}"></i>&nbsp;{{$category->name}}</h2>     
                    <div class="row">
                    @foreach($category->productshome as $product)
                         <div class="col-md-3">

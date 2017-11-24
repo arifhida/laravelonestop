@@ -9,6 +9,7 @@
                     <th>Product Name</th>
                     <th>Description</th>
                     <th>Category</th>
+                    <th>Sub Category</th>
                     <th>Price</th>
                     <th>Active</th>
                     <th>Action</th>
@@ -16,6 +17,7 @@
             </thead>
         </table>
     </div>
+    
 @endsection
 @section('scripts')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-colvis-1.4.2/b-flash-1.4.2/b-html5-1.4.2/b-print-1.4.2/datatables.min.css"/>
@@ -35,7 +37,8 @@
                     {data: 'id', searchable: false },
                     {data: 'product_name'},
                     {data: 'description'},
-                    {data: 'name'},
+                    {data: 'category'},
+                    {data: 'subcategory'},
                     {data: 'price'},
                     {data: 'active', className: 'text-center',orderable: false,  searchable: false,
                         render:function(data, type, row, meta){ 

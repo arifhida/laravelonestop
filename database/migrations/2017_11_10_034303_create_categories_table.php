@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name', 100)->nullable();
             $table->boolean('active')->nullable($value = true);
+            $table->string('icon',100)->nullable();
             $table->timestamps();
         });
     }

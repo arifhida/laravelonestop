@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Http\Requests\productpost;
-use App\Product as Product;
+use App\SubCategory as SubCategory;
 use App\Category as Category;
-use App\ProductImage as ProductImage;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class SubCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,24 +14,28 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::with('category')->get();        
-        return View('product.index',compact('data'));
+        $categories = Category::all(); 
+        return view('subcategory.index',compact('categories'));
         //
     }
 
     public function data(Request $request){
         $start = $request['start'];
         $length = $request['length'];
-        $data = Product::getData($request); 
+        $data = SubCategory::getData($request->all());
         $recordsFiltered = $data->get()->count();
         $result = $data->skip($start)->take($length)->get();
         $draw = $request->draw + 1;
-        $recordsTotal = Product::all()->count();
+        $recordsTotal = SubCategory::all()->count();
         return response()->json(['draw'=> $draw, 'recordsTotal' => $recordsTotal,
                 'recordsFiltered' => $recordsFiltered, 'data' => $result ]);
     }
 
-    
+    public function dataByParentId($id){
+        $data = SubCategory::where('category_id','=',$id)->get();
+        return response()->json($data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,8 +43,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();        
-        return View('product.create',compact('categories'));
         //
     }
 
@@ -53,28 +52,18 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(productpost $request)
+    public function store(Request $request)
     {
-        
-        $input = $request->all();
-        unset($input['downloadurl']);
-        unset($input['images']);
-        $path = $request->downloadurl->store('public/' . $request->category_id);
-        $input['url'] = $path;
-        $id = Product::create($input)->id;
-        if($request->hasFile('images')){
-            foreach($request->images as $imageurl){
-                $url = $imageurl->store('public');
-                $image = array(
-                    'product_id'=> $id,
-                    'image' => basename($url),
-                    'image_url'=> $url
-                );
-
-                ProductImage::create($image);
-            }
-        }
-        return redirect('product');
+        $this->validate($request,[
+            'name' => 'required',
+            'category_id' => 'required'
+        ]);
+        SubCategory::create(
+            ['name' => $request->name,
+            'category_id'=> $request->category_id, 
+            'active'=> $request->active]
+        );
+        return response()->json(['status'=> 'OK']);
     }
 
     /**
@@ -85,9 +74,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $data = Product::with('category','images')->findOrFail($id);
-
-        return response()->json(['data'=> $data]);
+        $subcategory = SubCategory::find($id);
+        return response()->json(['subcategory'=> $subcategory]);
+        //
     }
 
     /**
@@ -98,12 +87,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data = Product::with('category','images')->findOrFail($id);
-        foreach($data->images as $image){
-            $image->image_url = url('/') . '/storage/'. $image->image;
-        }
-        $categories = Category::all();
-        return View('product.edit',compact('data','categories'));
+        //
     }
 
     /**
@@ -115,7 +99,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $subcategory = SubCategory::find($id);
+        $input = $request->all();
+
+        $subcategory->update($input);
         
+        return response()->json(['status'=> 'OK']);
+        //
     }
 
     /**
@@ -126,8 +116,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $subcategory = SubCategory::find($id);
+        $subcategory->delete();
         return response()->json(['status'=> 'OK']);
         //
     }

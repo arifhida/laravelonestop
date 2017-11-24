@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category as Category;
+use App\Product as Product;
+use DB;
+use Route;
 
 use Illuminate\Http\Request;
 
@@ -33,9 +36,16 @@ class HomeController extends Controller
         return view('home',compact('categories','data'));
     }
 
-    public function product(Request $request)
+    public function product(Request $request,$id)
     {
-
+        $categories = Category::all();
+        $keyword = $request['keyword'];
+        $query = Product::with('images')->where('category_id','=',$id);
+        if($keyword){
+            $query->where('product_name','like',"%$keyword%");
+        }        
+        $data = $query->get();
+        return view('home.product',compact('categories','data','id'));
         # code...
     }
 }

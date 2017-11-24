@@ -9,13 +9,19 @@ class Category extends Model
 {
     //
     protected $fillable =[
-        'name','active'
+        'name','active','icon'
     ];
+
+    public function subcategories(){
+        return $this->hasMany('App\SubCategory');
+    }  
+
 
     public function products(){
         return $this->hasMany('App\Product');
-    }   
-
+    }  
+    
+    
     public function productshome(){
         return $this->hasMany('App\Product')->where('active','=',1)->orderBy('id','desc')->take(4);
     }
@@ -45,6 +51,6 @@ class Category extends Model
 
         $query->orderBy($sortcolumn,$sort_dir);
 
-        return $query->select('id','name','active');
+        return $query->select('id','name','icon','active');
     }
 }
