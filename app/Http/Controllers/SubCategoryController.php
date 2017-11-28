@@ -117,6 +117,7 @@ class SubCategoryController extends Controller
     public function destroy($id)
     {
         $subcategory = SubCategory::find($id);
+       
         $subcategory->delete();
         return response()->json(['status'=> 'OK']);
         //

@@ -23,8 +23,8 @@
                     <div class="card">
                         <img class="card-img-top" src="{{url('/storage/') .'/' . $product->images[0]->image}}" alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title">{{$product->product_name}}</h4>
-                            <p class="card-text">{{$product->description}}</p>
+                        <h4 class="card-title"><a class="card-link" href="{{ route('home.detail',['product' => $product->id ])}}">{{$product->product_name}}</a></h4>
+                            <p class="card-text">{{ substr($product->description,0,40) }}</p>
                         </div>
                         <div class="card-footer text-muted text-right">
                             <label>Rp. {{number_format($product->price,2,',','.')}}</label>                                    

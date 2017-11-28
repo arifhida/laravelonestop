@@ -7,6 +7,7 @@ use App\Http\Requests\productpost;
 use App\Product as Product;
 use App\Category as Category;
 use App\ProductImage as ProductImage;
+use App\SubCategory as SubCategory;
 
 class ProductController extends Controller
 {
@@ -61,6 +62,7 @@ class ProductController extends Controller
         unset($input['images']);
         $path = $request->downloadurl->store('public/' . $request->category_id);
         $input['url'] = $path;
+        $input['active'] = 1;
         $id = Product::create($input)->id;
         if($request->hasFile('images')){
             foreach($request->images as $imageurl){
@@ -103,7 +105,8 @@ class ProductController extends Controller
             $image->image_url = url('/') . '/storage/'. $image->image;
         }
         $categories = Category::all();
-        return View('product.edit',compact('data','categories'));
+        $subcategories = SubCategory::where('category_id','=',$data->category_id)->get();
+        return View('product.edit',compact('data','categories','subcategories'));
     }
 
     /**
@@ -115,7 +118,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        $input = $request->all();
+        $this->validate($request, [
+            'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'product_name' => 'required',
+            'description' => 'required',
+            'price' => 'required'        
+        ]);
+        $data = Product::find($id);
+        if($request->hasFile('downloadurl')){
+            $path = $request->downloadurl->store('public/' . $request->category_id);
+            $input['url'] = $path;
+        }
+        $data->update($input);
+        return redirect('product');
     }
 
     /**

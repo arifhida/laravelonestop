@@ -23,7 +23,7 @@ class Category extends Model
     
     
     public function productshome(){
-        return $this->hasMany('App\Product')->where('active','=',1)->orderBy('id','desc')->take(4);
+        return $this->hasMany('App\Product')->where('active','=',1)->orderBy('id','desc');
     }
 
     public static function getData($request){        

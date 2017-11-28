@@ -15,10 +15,16 @@
         {{ csrf_field() }}
         <div class="form-group">
             <label>Category</label>
-            <select class="form-control" name="category_id">
+            <select class="form-control" name="category_id" id="category_id">
+                <option disabled selected value="">--Select Category--</option>
                 @foreach($categories as $category)
                     <option value="{{$category->id}}">{{ $category->name }}</option>
                 @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Sub Category</label>
+            <select class="form-control" name="sub_category_id" id="subcategory">
             </select>
         </div>
         <div class="form-group">
@@ -45,4 +51,26 @@
     </form>    
 </div>
 
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $('#category_id').change(function(e){
+                var $cat_id = e.target.value;
+                getSub($cat_id);
+            });
+            $categoryid = $('#category_id').val();            
+        });
+
+        function getSub($id){
+            $('#subcategory').empty();
+            axios.get("{{ url('subcategory/parent/') }}" + "/"+ $id).then(function(response){
+                $.each(response.data,function(idx,c){
+                    $('#subcategory').append('<option value="'+ c.id+'">'+ c.name + '</option>')
+                });
+            }).catch(function(errors){
+                console.log(errors);
+            });
+        }
+    </script>
 @endsection

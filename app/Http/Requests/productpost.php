@@ -25,6 +25,7 @@ class productpost extends FormRequest
     {
         $rules = [
             'category_id' => 'required',
+            'sub_category_id' => 'required',
             'product_name' => 'required',
             'description' => 'required',
             'downloadurl' => 'required',

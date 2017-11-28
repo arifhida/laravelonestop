@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ProductImage as ProductImage;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller
 {
@@ -35,6 +36,18 @@ class ProductImageController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->all();
+        $this->validate($request, [
+            'product_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,bmp,png|max:2000'   
+        ]);
+        $path = $request->image->store('public/' . $request->category_id);
+        $input['image_url'] = $path;
+        $input['image'] = basename($path);
+        ProductImage::create($input);
+        $id = $request->product_id;
+        
+        return redirect()->route('product.edit',['product' =>$id]);
         //
     }
 
@@ -81,6 +94,7 @@ class ProductImageController extends Controller
     public function destroy($id)
     {
         $image = ProductImage::find($id);
+        Storage::delete($image->image);
         $image->delete();
         return response()->json(['status'=> 'OK']);
         //
