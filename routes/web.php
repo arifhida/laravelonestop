@@ -33,6 +33,6 @@ Route::resource('Image','ProductImageController',[
     ]
 ]);
 
-Route::get('login/google', 'Auth\LoginController@redirectToProvider');
-Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('login/{service}', 'Auth\LoginController@redirectToProvider')->name('social');
+Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback')->name('socialcallback');
 
