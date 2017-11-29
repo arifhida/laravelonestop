@@ -21,8 +21,8 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">               
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}" class="btn btn-success">Login</a></li>
-                    <li><a href="{{ route('register') }}" class="btn btn-success">Register</a></li>
+                    <li  class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
+                    <li  class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
                 @else        
                     <!-- <li>
                         <a href="#" data-toggle="modal" data-target="#cartModal"><i class="fa fa-shopping-cart" style="color:#fff;font-size:1.7em"></i><span class="badge badge-danger" id="totalCart"></span></a>

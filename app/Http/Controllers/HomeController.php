@@ -55,8 +55,9 @@ class HomeController extends Controller
     }
 
     public function show($id){
+        $categories = Category::all();
         $data = Product::with('images','category','sub_category')->findOrFail($id);
-        return response()->json($data);
+        return view('home.show',compact('categories','data'));
     }
 
 }
