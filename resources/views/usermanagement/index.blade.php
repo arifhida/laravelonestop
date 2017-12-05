@@ -14,6 +14,39 @@
         </thead>
     </table>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalUser">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userName">New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <form action="" class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" name="email" class="form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" name="password" class="form-control" required/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -52,7 +85,7 @@
                     text : "<i class='fa fa-plus'></i> Add User",
                     className: 'btn btn-success green-meadow',
                     action: function(e, dt, node, config){
-                        
+                        addUser();
                     }
                 }
             ],
@@ -61,5 +94,24 @@
                         "<'row' <'col-sm-6'i><'col-sm-6'p>>"
         });
     });
+
+    function addUser(){
+        var $modal =  $('#modalUser');
+        $form = $modal.find('.form-horizontal');
+        $form[0].reset();
+        $modal.modal('show');
+        $form.unbind();
+        $form.submit(function(e){
+            e.preventDefault();
+            axios.post("{{ route('usermanagement.store') }}",$form.serialize())
+                .then(function(response){                  
+                    $table.ajax.reload();
+                }).catch(function(errors){
+                    console.log(errors);
+                });
+            $modal.modal('hide');
+            return false;
+        });
+    }
 </script>
 @endsection

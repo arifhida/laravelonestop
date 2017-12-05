@@ -54,6 +54,7 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
+        
         //
     }
 
