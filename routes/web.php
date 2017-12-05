@@ -32,6 +32,9 @@ Route::resource('Image','ProductImageController',[
         'store', 'destroy'
     ]
 ]);
+Route::resource('usermanagement','UserManagementController');
+
+Route::get('/usermanagement/data','UserManagementController@data')->name('user.data');
 
 Route::get('login/{service}', 'Auth\LoginController@redirectToProvider')->name('social');
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback')->name('socialcallback');

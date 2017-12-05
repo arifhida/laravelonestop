@@ -15,6 +15,21 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Search"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">Go!</button>
+                            </span>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            
+        </div>
         <div class="col-md-12">          
             @foreach($data as $category)
             <div class="row">               
