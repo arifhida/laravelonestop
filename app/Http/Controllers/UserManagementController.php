@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User as User;
 
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class UserManagementController extends Controller
     public function index()
     {
         //
-        return View('usermanagement.index');
+        $data = User::all();
+        return View('usermanagement.index',compact('data'));
     }
 
     /**
@@ -29,7 +31,19 @@ class UserManagementController extends Controller
 
 
     public function data(Request $request){
-        
+
+        // return response()->json('OK');
+        $start = $request['start'];
+        $length = $request['length'];
+        $data = User::getData($request->all());
+        // dd($data->get());
+        $recordsFiltered = $data->get()->count();
+        $result = $data->skip($start)->take($length)->get();
+        $draw = $request->draw + 1;
+        $recordsTotal = User::all()->count();
+
+        return response()->json(['draw'=> $draw, 'recordsTotal' => $recordsTotal,
+                'recordsFiltered' => $recordsFiltered, 'data' => $result ]);
     }
 
     /**
