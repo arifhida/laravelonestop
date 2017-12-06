@@ -25,6 +25,7 @@
                 </button>
             </div>
         <form action="" class="form-horizontal">
+            {{ csrf_field() }}
             <div class="modal-body">
                 <div class="form-group">
                     <label>Name</label>
@@ -103,7 +104,7 @@
         $form.unbind();
         $form.submit(function(e){
             e.preventDefault();
-            axios.post("{{ route('usermanagement.store') }}",$form.serialize())
+            axios.post("{{ url('api/usermanagement') }}",$form.serialize())
                 .then(function(response){                  
                     $table.ajax.reload();
                 }).catch(function(errors){
@@ -112,6 +113,43 @@
             $modal.modal('hide');
             return false;
         });
+    }
+
+    function editUser($id){
+        var $modal =  $('#modalUser');
+        $form = $modal.find('.form-horizontal');
+        axios.get("{{ url('api/usermanagement') }}" + "/"+ $id)
+            .then(function(response){
+                var $user = response.data.user;
+                $('input[name="name"]').val($user.name);
+                $('input[name="email"]').val($user.email);
+                console.log($user.name);
+            }).catch(function(errors){
+                console.log($user.name);
+            });
+        $form[0].reset();
+        $modal.modal('show');
+        $form.unbind();
+
+        $form.submit(function(e){
+            e.preventDefault();
+            axios.put("{{ url('api/usermanagement') }}" + "/"+ $id, $form.serialize())
+                .then(function(response){
+                    $table.ajax.reload();
+                }).catch(function(errors){
+
+                });
+            $modal.modal('hide');
+            return false;
+        });        
+    }
+
+    function deleteUser($id){
+        axios.delete("{{ url('api/usermanagement/') }}" + "/" + id).then(function(response){
+                $table.ajax.reload();
+            }).catch(function(errors){
+                console.log(errors);
+            });
     }
 </script>
 @endsection

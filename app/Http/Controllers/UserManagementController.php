@@ -15,8 +15,8 @@ class UserManagementController extends Controller
     public function index()
     {
         //
-        $data = User::all();
-        return View('usermanagement.index',compact('data'));
+        // $data = User::all();
+        return View('usermanagement.index');
     }
 
     /**
@@ -54,7 +54,20 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6'
+        ]);
+        $input = $request->all();
         
+        User::create([
+            'name'=> $input['name'],
+            'email' => $input['email'],
+            'password' => bcrypt($input['password']),
+        ]);
+
+        return response()->json(['status' => "OK"]);
         //
     }
 
@@ -66,6 +79,8 @@ class UserManagementController extends Controller
      */
     public function show($id)
     {
+        $data = User::find($id);
+        return response()->json(['user'=> $data]);
         //
     }
 
@@ -89,6 +104,7 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         //
     }
 
@@ -100,6 +116,10 @@ class UserManagementController extends Controller
      */
     public function destroy($id)
     {
+
+        $data = User::find($id);
+        $data->delete();
+        return response()->json(['status'=> 'OK']);
         //
     }
 }

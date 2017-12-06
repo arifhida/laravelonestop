@@ -26,6 +26,11 @@ Route::resource('subcategory', 'SubCategoryController',[
         'index','create','edit'
     ]
 ]);
+Route::resource('usermanagement','UserManagementController',[
+    'except' => [
+        'index','create','edit'
+    ]
+]);
 Route::get('/category/data','CategoryController@data')->name('category.data');
 Route::get('/product/data','ProductController@data')->name('product.data');
 
