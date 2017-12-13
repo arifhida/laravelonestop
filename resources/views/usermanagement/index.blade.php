@@ -98,6 +98,9 @@
 
     function addUser(){
         var $modal =  $('#modalUser');
+        $('#userName').val('New User');
+        $('input[name="email"]').prop('readonly', null);
+        $('input[name="password"]').prop('required', 'required');
         $form = $modal.find('.form-horizontal');
         $form[0].reset();
         $modal.modal('show');
@@ -118,11 +121,13 @@
     function editUser($id){
         var $modal =  $('#modalUser');
         $form = $modal.find('.form-horizontal');
+        $('input[name="password"]').prop('required', null);
         axios.get("{{ url('api/usermanagement') }}" + "/"+ $id)
             .then(function(response){
                 var $user = response.data.user;
+                $('#userName').val($user.email);
                 $('input[name="name"]').val($user.name);
-                $('input[name="email"]').val($user.email);
+                $('input[name="email"]').val($user.email).attr('readonly','readonly');
                 console.log($user.name);
             }).catch(function(errors){
                 console.log($user.name);
@@ -136,8 +141,9 @@
             axios.put("{{ url('api/usermanagement') }}" + "/"+ $id, $form.serialize())
                 .then(function(response){
                     $table.ajax.reload();
+                    console.log(response);
                 }).catch(function(errors){
-
+                    console.log(response);
                 });
             $modal.modal('hide');
             return false;
@@ -145,7 +151,7 @@
     }
 
     function deleteUser($id){
-        axios.delete("{{ url('api/usermanagement/') }}" + "/" + id).then(function(response){
+        axios.delete("{{ url('api/usermanagement/') }}" + "/" + $id).then(function(response){
                 $table.ajax.reload();
             }).catch(function(errors){
                 console.log(errors);

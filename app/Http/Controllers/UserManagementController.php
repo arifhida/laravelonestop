@@ -104,7 +104,23 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request,[
+            'name' => 'required|string|max:255'
+        ]);
+        // dd($request->password);
+        $data = User::findOrFail($id);
+        $input = $request->all();
+        if($request->has('password')){
+            $password = bcrypt($input['password']);
+            $data->password = $password;
+        }
+            
+            
+        $data->name = $input['name'];
+        
 
+        $data->save();
+        return response()->json(['status'=> 'OK']);
         //
     }
 
