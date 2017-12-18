@@ -39,3 +39,9 @@ Route::resource('product','ProductController',[
         'index','create','edit'
     ]
 ]);
+Route::get('role/data','RoleController@data')->name('role.data');
+Route::resource('role', 'RoleController',[
+    'except' => [
+        'index','create','edit'
+    ]
+]);

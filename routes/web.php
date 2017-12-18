@@ -33,6 +33,11 @@ Route::resource('Image','ProductImageController',[
     ]
 ]);
 Route::resource('usermanagement','UserManagementController');
+Route::resource('role','RoleController',[
+    'except' => [
+        'store','update','show'
+    ]
+]);
 
 Route::get('/user/data','UserManagementController@data')->name('user.data');
 

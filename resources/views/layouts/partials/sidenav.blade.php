@@ -4,5 +4,6 @@
         <li class="nav-item"><a class="nav-link" href="{{ route('subcategory') }}">Sub Category</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('product.index') }}">Product</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('usermanagement.index') }}">User Management</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('role.index') }}">Role Management</a></li>
     </ul>
 </nav>
