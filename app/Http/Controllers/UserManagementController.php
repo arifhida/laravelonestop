@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->only('index');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -79,7 +82,7 @@ class UserManagementController extends Controller
      */
     public function show($id)
     {
-        $data = User::find($id);
+        $data = User::with('roles')->find($id);
         return response()->json(['user'=> $data]);
         //
     }

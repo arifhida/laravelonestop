@@ -128,7 +128,7 @@
                 $('#userName').val($user.email);
                 $('input[name="name"]').val($user.name);
                 $('input[name="email"]').val($user.email).attr('readonly','readonly');
-                console.log($user.name);
+                console.log(response);
             }).catch(function(errors){
                 console.log($user.name);
             });
